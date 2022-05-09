@@ -44,9 +44,15 @@ def get_shop_list_by_dishes(dishes: list, persons: int):
     return shop_list
 
 
+def write_shop_list(shop_list:dict, shop_list_file_name:str = 'shop_list.txt'):
+    with open(shop_list_file_name, 'w', encoding='UTF8') as shop_list_file:
+        for ingredient, quantity in shop_list.items():
+            shop_list_file.write(f'{ingredient}: {quantity["quantity"]} {quantity["measure"]}\n')
+
+
 def main():
-    get_shop_list_by_dishes(*read_dinner_menu())
-    pass
+    shop_list = get_shop_list_by_dishes(*read_dinner_menu())
+    write_shop_list(shop_list)
 
 
 if __name__ == '__main__':
