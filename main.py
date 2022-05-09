@@ -25,10 +25,27 @@ def read_cook_book(cb_file_name: str = 'recipes.txt'):
     return cook_book
 
 
-def main():
+def read_dinner_menu(dinner_menu_file_name: str = 'dinner_menu.txt'):
+    with open(dinner_menu_file_name, encoding='UTF8') as dinner_menu_file:
+        dinner_menu_list = []
+        for line in dinner_menu_file:
+            dinner_menu_list.append(line.strip())
+    return dinner_menu_list[:-1], int(dinner_menu_list[-1])
+
+
+def get_shop_list_by_dishes(dishes: list, persons: int):
     cook_book = read_cook_book()
-    print(*cook_book.items(), sep='\n')
-    print(len(cook_book))
+    shop_list = {}
+    for dish in dishes:
+        if dish in cook_book:
+            for ingredient in cook_book[dish]:
+                shop_list.setdefault(ingredient['ingredient_name'], {'measure': ingredient['measure'], 'quantity': 0})
+                shop_list[ingredient['ingredient_name']]['quantity'] += ingredient['quantity'] * persons
+    return shop_list
+
+
+def main():
+    get_shop_list_by_dishes(*read_dinner_menu())
     pass
 
 
